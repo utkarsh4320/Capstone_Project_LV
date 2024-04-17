@@ -11,7 +11,7 @@ import warnings
 warnings.filterwarnings('ignore')
 
 # Set page title and layout
-st.set_page_config(page_title="Saksham Gupta - Customer Segmentation Analysis", layout="wide")
+st.set_page_config(page_title="UTKARSH ANAND - Customer Segmentation Analysis", layout="wide")
 
 # Header
 st.header("Customer Segmentation Analysis for Retail")
@@ -19,7 +19,7 @@ st.header("Customer Segmentation Analysis for Retail")
 # Load data
 @st.cache_resource()
 def load_data():
-    df = pd.read_csv('https://raw.githubusercontent.com/sgx-saksham/Predictive-Analysis-streamlit/main/Capstone_data_cleaned.csv')  
+    df = pd.read_csv('https://github.com/utkarsh4320/Capstone_Project_LV/blob/main/Capstone_Final_data%20(1).csv')  
     return df.copy()  
 
 df = load_data()
