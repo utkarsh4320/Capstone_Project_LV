@@ -1,0 +1,5 @@
+pandas
+plotly
+streamlit
+pandas-datareader
+scikit-learn
