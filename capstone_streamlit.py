@@ -32,7 +32,6 @@ if uploaded_file is not None:
 
 
 # df = pd.read_csv('https://github.com/utkarsh4320/Capstone_Dataset/blob/main/Capstone_Final_data%20(1).csv',encoding='latin-1')  
-df = df.copy() 
 
 
 df['dim_Order_Date'] = pd.to_datetime(df['dim_Order_Date'],format="%d-%m-%Y")
