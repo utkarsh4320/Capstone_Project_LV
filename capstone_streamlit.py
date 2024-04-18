@@ -19,19 +19,39 @@ st.header("Customer Segmentation Analysis for Retail")
 # Load data
 @st.cache_resource()
 def load_data():
-    df = pd.read_csv('https://github.com/utkarsh4320/Capstone_Project_LV/blob/main/Capstone_Final_data%20(1).csv')  
+    df = pd.read_csv('https://github.com/utkarsh4320/Capstone_Dataset')  
     return df.copy()  
 
 df = load_data()
 
+df['dim_Order_Date'] = pd.to_datetime(df['dim_Order_Date'],format="%d-%m-%Y")
+
+# Create a new column 'month' containing the month of each visit
+df['month'] = df['dim_Order_Date'].dt.month
+
+# Group by 'month' and count the number of visits for each month
+visits_per_month = df.groupby('month').size().reset_index(name='visits_per_months')
+# Print the result
+print(visits_per_month)
+
+df=pd.merge(df,visits_per_month,how="left",on="month")
+df.shape
+
+
+
 # Label encode categorical columns
 le = LabelEncoder()
-cat_cols = ['dim_gender', 'dim_location', 'dim_preferred_payment_method', 'dim_product_category', 'dim_season', 'dim_preferred_product_category']
+cat_cols=['dim_Ship_Mode','dim_Customer_Name','dim_Region','dim_Product_Category','dim_Product_Sub_Category','dim_Product_Name','dim_Gender','dim_Store_type','dim_Payment_Mode',
+'dim_Season','m_prefered_category','m_cross_channel_shopping','dim_campaign_name','dim_repeat_customer']
+
+#cat_cols = ['dim_gender', 'dim_location', 'dim_preferred_payment_method', 'dim_product_category', 'dim_season', 'dim_preferred_product_category']
 df[cat_cols] = df[cat_cols].apply(le.fit_transform)
 
 # Standardize numerical columns
 scaler = StandardScaler()
-num_cols = ['dim_gender', 'dim_age', 'dim_preferred_product_category', 'dim_season', 'meas_store_visits_per_month', 'meas_total_spending', 'meas_annual_income', 'meas_discount_usage', 'meas_days_since_last_purchase', 'meas_loyalty_points', 'meas_average_basket_size', 'meas_satisfaction_score', 'meas_purchase_frequency']
+num_cols=['dim_Order_ID','dim_Order_Quantity','dim_Sales','dim_Discount','dim_Age','m_days_since_last_purchase','m_avg_basket_size','dim_Income','m_Total_spending',
+'m_loyality_points','m_satisfaction_score','month','visits_per_months']
+#num_cols = ['dim_gender', 'dim_age', 'dim_preferred_product_category', 'dim_season', 'meas_store_visits_per_month', 'meas_total_spending', 'meas_annual_income', 'meas_discount_usage', 'meas_days_since_last_purchase', 'meas_loyalty_points', 'meas_average_basket_size', 'meas_satisfaction_score', 'meas_purchase_frequency']
 df[num_cols] = scaler.fit_transform(df[num_cols])
 
 # Initial data insights
@@ -44,17 +64,17 @@ st.sidebar.title("Options")
 segmentation_type = st.sidebar.selectbox('Select segmentation type', ['Demographic', 'Behavioral', 'Purchase History', 'Preferences', 'Seasonal', 'Engagement'])
 
 if segmentation_type == 'Demographic':
-    selected_features = ['dim_age', 'dim_gender', 'meas_total_spending']
+    selected_features = ['dim_Age', 'dim_Gender', 'm_Total_spending']
 elif segmentation_type == 'Behavioral':
-    selected_features = ['meas_store_visits_per_month', 'meas_total_spending', 'meas_discount_usage', 'meas_purchase_frequency']
+    selected_features = ['visits_per_month', 'm_Total_spending', 'dim_Discount']
 elif segmentation_type == 'Purchase History':
-    selected_features = ['meas_store_visits_per_month', 'meas_days_since_last_purchase', 'meas_average_basket_size']
+    selected_features = ['visits_per_month', 'm_days_since_last_purchase', 'm_avg_basket_size']
 elif segmentation_type == 'Preferences':
-    selected_features = ['dim_preferred_product_category', 'dim_preferred_payment_method', 'meas_loyalty_points', 'meas_satisfaction_score']
+    selected_features = ['m_prefered_category', 'dim_Payment_Mode', 'm_loyality_points', 'm_satisfaction_score']
 elif segmentation_type == 'Seasonal':
-    selected_features = ['dim_season', 'meas_total_spending', 'meas_satisfaction_score']
+    selected_features = ['dim_Season', 'm_Total_spending', 'm_satisfaction_score']
 elif segmentation_type == 'Engagement':
-    selected_features = ['meas_discount_usage','meas_store_visits_per_month', 'meas_days_since_last_purchase']
+    selected_features = ['dim_Discount','visits_per_month', 'm_days_since_last_purchase']
 
 # Display selected variables
 st.sidebar.markdown(f"**Selected Features for {segmentation_type} Segmentation:**")
@@ -127,14 +147,15 @@ if st.sidebar.button('View visualization'):
         st.markdown("The 3D visualization displays customer segments based on the selected features for clustering.")
         st.markdown("Each cluster represents a group of customers with similar characteristics.")
         st.markdown("This information can be used to tailor marketing strategies, improve sales, and understand customer behavior.")
-        st.markdown("To get to know about each cluster and component [*click here*](https://customer-segmentation-team-1.netlify.app/clusters)")
-        st.markdown("To get every detail about each cluster and component and its analysis [*click here*](https://colab.research.google.com/drive/1HESEctJ4dT_Gi7o6f0k2kdMI8z99L57J?usp=sharing)")
+        #st.markdown("To get to know about each cluster and component [*click here*](https://customer-segmentation-team-1.netlify.app/clusters)")
+        #st.markdown("To get every detail about each cluster and component and its analysis [*click here*](https://colab.research.google.com/drive/1HESEctJ4dT_Gi7o6f0k2kdMI8z99L57J?usp=sharing)")
     else:
         st.sidebar.error('Please train the dataset first.')
 
 # Footer
 st.sidebar.markdown("---")
 st.sidebar.markdown("Developed by Team 1 ")
-st.sidebar.markdown("- Saksham Gupta")
-st.sidebar.markdown("- Prasanna Venkadesh")
-st.sidebar.markdown("- Abirami B")
+st.sidebar.markdown("- Utkarsh Anand")
+st.sidebar.markdown("- Vaishnavi R")
+st.sidebar.markdown("- Vineet")
+st.sidebar.markdown("- Sri Lekha")
