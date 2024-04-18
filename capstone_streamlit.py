@@ -20,15 +20,15 @@ st.header("Customer Segmentation Analysis for Retail")
 @st.cache_resource()
 def load_data():
     st.title("CSV File Uploader")
-# File uploader widget
+    # File uploader widget
     uploaded_file = st.file_uploader("Choose a CSV file", type=["csv"])
     if uploaded_file is not None:
-    # Read the uploaded CSV file
+        # Read the uploaded CSV file
         df = pd.read_csv(uploaded_file)
-    # Display the DataFrame
+        # Display the DataFrame
         st.write("Uploaded DataFrame:", df)
 
-   # df = pd.read_csv('https://github.com/utkarsh4320/Capstone_Dataset/blob/main/Capstone_Final_data%20(1).csv',encoding='latin-1')  
+        # df = pd.read_csv('https://github.com/utkarsh4320/Capstone_Dataset/blob/main/Capstone_Final_data%20(1).csv',encoding='latin-1')  
     return df.copy() 
 
 df = load_data()
