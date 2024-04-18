@@ -24,7 +24,7 @@ def load_data():
     uploaded_file = st.file_uploader("Choose a CSV file", type=["csv"])
     if uploaded_file is not None:
         # Read the uploaded CSV file
-        df = pd.read_csv(uploaded_file)
+        df = pd.read_csv(uploaded_file,encoding='latin-1')
         # Display the DataFrame
         st.write("Uploaded DataFrame:", df)
 
