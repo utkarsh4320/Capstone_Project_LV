@@ -17,15 +17,21 @@ st.set_page_config(page_title="UTKARSH ANAND - Customer Segmentation Analysis", 
 st.header("Customer Segmentation Analysis for Retail")
 
 # Load data
+df = pd.DataFrame()
+# Load data
 st.title("CSV File Uploader")
 # File uploader widget
-
+uploaded_file = st.file_uploader("Choose a CSV file", type=["csv"])
+if uploaded_file is not None:
+    # Read the uploaded CSV file
+    df = pd.read_csv(uploaded_file, encoding='latin-1')
+    # Display the DataFrame
+    st.write("Uploaded DataFrame:", df)
 
 # Continue with the rest of your script...
 
 
-df = pd.read_csv('https://github.com/utkarsh4320/Capstone_Dataset/blob/main/Capstone_Final_data%20(1).csv',encoding='latin-1')  
-
+# df = pd.read_csv('https://github.com/utkarsh4320/Capstone_Dataset/blob/main/Capstone_Final_data%20(1).csv',encoding='latin-1')  
 
 
 df['dim_Order_Date'] = pd.to_datetime(df['dim_Order_Date'],format="%d-%m-%Y")
