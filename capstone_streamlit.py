@@ -19,8 +19,17 @@ st.header("Customer Segmentation Analysis for Retail")
 # Load data
 @st.cache_resource()
 def load_data():
-    df = pd.read_csv('https://github.com/utkarsh4320/Capstone_Dataset/blob/main/Capstone_Final_data%20(1).csv',encoding='latin-1')  
-    return df.copy()  
+    st.title("CSV File Uploader")
+# File uploader widget
+    uploaded_file = st.file_uploader("Choose a CSV file", type=["csv"])
+    if uploaded_file is not None:
+    # Read the uploaded CSV file
+        df = pd.read_csv(uploaded_file)
+    # Display the DataFrame
+        st.write("Uploaded DataFrame:", df)
+
+   # df = pd.read_csv('https://github.com/utkarsh4320/Capstone_Dataset/blob/main/Capstone_Final_data%20(1).csv',encoding='latin-1')  
+    return df.copy() 
 
 df = load_data()
 
@@ -35,7 +44,6 @@ visits_per_month = df.groupby('month').size().reset_index(name='visits_per_month
 print(visits_per_month)
 
 df=pd.merge(df,visits_per_month,how="left",on="month")
-
 # Label encode categorical columns
 le = LabelEncoder()
 cat_cols=['dim_Ship_Mode','dim_Customer_Name','dim_Region','dim_Product_Category','dim_Product_Sub_Category','dim_Product_Name','dim_Gender','dim_Store_type','dim_Payment_Mode',
